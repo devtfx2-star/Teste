@@ -1,40 +1,75 @@
-<!-- SEO Essencial -->
-<title>Cadastro de Empresas Parceiras | Connect Pontis</title>
-<meta name="description" content="Cadastre sua loja na Connect Pontis e envie suas entregas em minutos com rotas otimizadas e pagamento via Pix integrado.">
-<link rel="canonical" href="https://connectpontis.com.br">
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Connect Pontis - Painel de Entregas</title>
+  <style>
+    body { font-family: sans-serif; background: #f4f6f9; padding: 20px; color: #333; }
+    .card { background: white; padding: 20px; border-radius: 8px; max-width: 500px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    input, button { width: 100%; padding: 10px; margin: 8px 0; box-sizing: border-box; border-radius: 4px; }
+    input { border: 1px solid #ccc; }
+    button { background: #00bcd4; color: white; border: none; font-weight: bold; cursor: pointer; }
+    button:hover { background: #0097a7; }
+    
+    /* Área da Etiqueta Oculta na Tela do Computador */
+    #area-etiqueta { display: none; }
 
-<!-- Open Graph / Redes Sociais --> 
-<meta property="og:title" content="Seja uma Loja Parceira Connect Pontis">
-<meta property="og:description" content="Simplifique a logística do seu delivery. Solicite motoboys em tempo real com segurança e transparência.">
-<meta property="og:image" content="https://connectpontis.com.br">
-<meta property="og:url" content="https://connectpontis.com.br">
-<meta property="og:type" content="website">
-
-<!-- Dados Estruturados Schema.org (Para o Google e IAs entenderem seu negócio) -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Service",
-  "name": "Connect Pontis Logística",
-  "description": "Plataforma de intermediação de entregas expressas entre lojas e motoboys.",
-  "provider": {
-    "@type": "Organization",
-    "name": "Connect Pontis",
-    "url": "https://connectpontis.com.br"
-  },
-  "areaServed": "BR",
-  "hasOfferCatalog": {
-    "@type": "OfferCatalog",
-    "name": "Serviços Logísticos",
-    "itemListElement": [
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Entrega Expressa com Rota Otimizada"
-        }
+    /* Estilo exclusivo para quando mandar IMPRIMIR */
+    @media print {
+      body * { display: none !important; } /* Esconde o site todo */
+      #area-etiqueta, #area-etiqueta * { display: block !important; } /* Mostra só a etiqueta */
+      #area-etiqueta {
+        width: 100mm;
+        height: 150mm;
+        padding: 5mm;
+        border: 2px dashed #000;
+        font-family: 'Courier New', monospace;
       }
-    ]
-  }
-}
-</script>
+      .barcode-placeholder { border: 1px solid #000; text-align: center; padding: 10px; margin-top: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>CONNECT PONTIS - Nova Entrega</h2>
+    <p><small>Origem: Identificada pelo seu login automaticamente</small></p>
+    
+    <label><strong>Endereço de Destino (Cliente):</strong></label>
+    <input type="text" id="destino" placeholder="Ex: Rua das Flores, 123 - Centro - São Paulo/SP">
+    
+    <button onclick="gerarEtiquetaETestar()">Gerar Pedido e Imprimir Etiqueta</button>
+  </div>
+
+  <!-- Área Oculta da Etiqueta Térmica -->
+  <div id="area-etiqueta">
+    <h3 style="text-align:center; margin-bottom:15px;">CONNECT PONTIS</h3>
+    <hr>
+    <p><strong>REMETENTE (SUA LOJA):</strong><br>Sua Empresa Cadastrada S.A.<br>Endereço de Origem Automático</p>
+    <hr>
+    <p><strong>DESTINATÁRIO (CLIENTE):</strong><br><span id="etiqueta-destino">O endereço digitado aparecerá aqui</span></p>
+    <hr>
+    <div class="barcode-placeholder">
+      ||||||||||||||||||||||||||||||||||||||||||||||<br>
+      *CP-PONTIS-MVP-2026*
+    </div>
+  </div>
+
+  <script>
+    function gerarEtiquetaETestar() {
+      const enderecoDigitado = document.getElementById('destino').value;
+      
+      if (!enderecoDigitado) {
+        alert('Por favor, digite um endereço de destino antes!');
+        return;
+      }
+      
+      // Atualiza o texto da etiqueta oculta com o que foi digitado
+      document.getElementById('etiqueta-destino').innerText = enderecoDigitado;
+      
+      // Abre a tela de impressão nativa do navegador Opera isolando a etiqueta
+      window.print();
+    }
+  </script>
+</body>
+</html>
